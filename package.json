@@ -1,0 +1,17 @@
+{
+  "name": "capture",
+  "version": "1.0.0",
+  "description": "空气自动站出事数据同步",
+  "main": "capture",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "itrice",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^10.12.19",
+    "guid-typescript": "^1.0.9",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
