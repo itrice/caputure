@@ -34,7 +34,7 @@ class capture {
         var _this = this;
         var items = [];
         var cityCode = '5107';
-        var st = Date.parse('2017-1-1');
+        var st = Date.parse('2017-01-01');
         for(var i =0; i<365*2;i++){
             var dt= new Date(st+i*1000*60*60*24);
             var dtStr = this.formatDate(dt);
@@ -52,10 +52,15 @@ class capture {
                     body += chunk;
                 });
                 res.on('end', function () {
+                    console.log(`${dtStr}原始返回数据：${body}`);
                     var rst = JSON.parse(body);
                     for (var i in rst.data) {
                         var item = new AQIStationHourLive();
                         var t = rst.data[i][0];
+                        if(!t){
+                            console.error(`${_this.formatDate(Date.now())}站点${i}远程接口${dtStr}返回数据错误`);
+                            continue;
+                        }
                         item.ID = Guid.create().toString();
                         item.AQI = t.AQI;
                         item.CO = t.CO;
@@ -87,7 +92,7 @@ class capture {
                         item.WP = "";
                         item.WS = "";
                         item.WD = "";
-                        console.log(rst.data[i]);
+                        //console.log(rst.data[i]);
                         _this.uploadInfo(item);
                     }
                 });
@@ -109,7 +114,7 @@ class capture {
             'data': JSON.stringify(info)
         });
         var options = {
-            hostname: url.parse('http://jzxy.f3322.net').hostname,
+            hostname: url.parse('http://192.168.1.242').hostname,
             port: 8090,
             path: '/AutoDeviceData/AddData',
             method: 'POST',
@@ -126,13 +131,13 @@ class capture {
                 console.log('No more data in response.');
             });
         });
-        console.log(info);
+        //console.log(info);
         req.write(postData);
         req.end();
     }
 
     async delay(ms: number) {
-        await new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
+        await new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log(""));
     }
     
     private formatDate(date) {
